@@ -1,0 +1,66 @@
+:root {
+  color-scheme: light dark;
+  --bg: #fff;
+  --fg: #1f2328;
+  --muted: #656d76;
+  --border: #d0d7de;
+  --card: #f6f8fa;
+  --input: #fff;
+  --accent: #0969da;
+  --green: #1f883d;
+  --red: #cf222e;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d1117;
+    --fg: #e6edf3;
+    --muted: #8b949e;
+    --border: #30363d;
+    --card: #161b22;
+    --input: #0d1117;
+    --accent: #2f81f7;
+    --green: #238636;
+    --red: #f85149;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0 auto; padding: 32px 24px 64px; max-width: 980px;
+  background: var(--bg); color: var(--fg);
+  font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+}
+h1 { font-size: 24px; margin: 0 0 4px; }
+h2 { font-size: 16px; margin: 0; }
+.sub, .muted { color: var(--muted); margin: 0; }
+em { font-style: normal; font-weight: 600; color: var(--fg); }
+section { margin-top: 32px; }
+.section-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+.actions { display: flex; gap: 8px; }
+.btn {
+  padding: 5px 12px; border-radius: 6px; border: 1px solid var(--border);
+  background: var(--card); color: var(--fg); cursor: pointer; font-size: 13px; font-weight: 500;
+}
+.btn:hover { filter: brightness(1.05); }
+.btn.primary { background: var(--green); border-color: var(--green); color: #fff; }
+.btn.danger { color: var(--red); }
+.btn.danger:hover { background: var(--red); border-color: var(--red); color: #fff; }
+.cards { display: grid; gap: 16px; }
+.card { border: 1px solid var(--border); border-radius: 10px; background: var(--card); padding: 12px; }
+.card-head { display: flex; gap: 8px; margin-bottom: 8px; }
+.card-head input { flex: 1; min-width: 0; }
+.card-head .name { flex: 0 0 240px; }
+input[type="text"], textarea {
+  padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border);
+  background: var(--input); color: var(--fg); font-size: 13px;
+}
+input:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent); }
+textarea.art, pre.art {
+  width: 100%; min-height: 160px; resize: vertical; margin: 0;
+  font: 11px/1.25 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: pre; overflow: auto;
+  tab-size: 4;
+}
+pre.art { padding: 8px 10px; border-radius: 6px; border: 1px solid var(--border); background: var(--input); max-height: 360px; }
+.readonly .card-head { align-items: baseline; }
+.readonly .title { font-weight: 600; }
+.readonly .tagline { color: var(--muted); font-size: 12px; }
+.status { min-height: 1.5em; color: var(--muted); font-size: 12px; }

@@ -1,0 +1,221 @@
+<!doctype html>
+<!-- High-fidelity mock of GitHub's PR "Files changed" view + the new React
+     "Finish your review" popover. Used only by scripts/shots/shoot.mjs to
+     produce README screenshots. Not part of the extension. -->
+<html lang="en" data-color-mode="light">
+<head>
+<meta charset="utf-8">
+<title>Add hyper-threaded marzlevanes to the turbo encabulator #42</title>
+<style>
+  :root {
+    --canvas: #ffffff; --canvas-subtle: #f6f8fa; --canvas-inset: #f6f8fa;
+    --fg: #1f2328; --muted: #656d76; --border: #d0d7de;
+    --accent: #0969da; --green: #1f883d; --green-fg: #ffffff;
+    --open: #1a7f37; --tab-underline: #fd8c73;
+    --add-bg: #dafbe1; --add-num: #aceebb; --del-bg: #ffebe9; --del-num: #ffcecb;
+    --shadow: 0 8px 24px rgba(140,149,159,0.2);
+  }
+  html[data-color-mode="dark"] {
+    --canvas: #0d1117; --canvas-subtle: #161b22; --canvas-inset: #010409;
+    --fg: #e6edf3; --muted: #8b949e; --border: #30363d;
+    --accent: #2f81f7; --green: #238636; --green-fg: #ffffff;
+    --open: #3fb950; --tab-underline: #f78166;
+    --add-bg: rgba(46,160,67,0.15); --add-num: rgba(63,185,80,0.3);
+    --del-bg: rgba(248,81,73,0.1); --del-num: rgba(248,81,73,0.3);
+    --shadow: 0 8px 24px #010409;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--canvas); color: var(--fg);
+    font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  }
+  .mono { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; }
+
+  /* top nav */
+  .topnav {
+    display: flex; align-items: center; gap: 12px; padding: 12px 24px;
+    background: var(--canvas-subtle); border-bottom: 1px solid var(--border); font-size: 14px;
+  }
+  .octo { width: 32px; height: 32px; border-radius: 50%; background: var(--fg); flex: none;
+          display: inline-flex; align-items: center; justify-content: center; color: var(--canvas); font-size: 20px; }
+  .crumb { font-weight: 600; }
+  .crumb span { font-weight: 400; }
+  .searchpill {
+    margin-left: auto; width: 320px; padding: 4px 10px; border: 1px solid var(--border);
+    border-radius: 6px; color: var(--muted); font-size: 13px; background: var(--canvas);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  kbd.slash { border: 1px solid var(--border); border-radius: 4px; padding: 0 5px; font-size: 11px; }
+
+  /* PR header */
+  .prhead { padding: 16px 24px 0; }
+  .prtitle { font-size: 22px; font-weight: 400; margin: 0 0 8px; }
+  .prtitle .num { color: var(--muted); font-weight: 300; }
+  .state {
+    display: inline-flex; align-items: center; gap: 6px; background: var(--open); color: #fff;
+    border-radius: 999px; padding: 5px 12px; font-weight: 500; font-size: 14px;
+  }
+  .prmeta { color: var(--muted); margin: 8px 0 12px; }
+  .prmeta b { color: var(--fg); font-weight: 600; }
+  .tabs { display: flex; gap: 8px; padding: 0 24px; border-bottom: 1px solid var(--border); }
+  .tab { padding: 8px 12px 10px; color: var(--fg); font-size: 14px; border-bottom: 2px solid transparent; }
+  .tab .count { background: color-mix(in srgb, var(--muted) 20%, transparent); border-radius: 999px; padding: 0 8px; font-size: 12px; }
+  .tab.active { border-bottom-color: var(--tab-underline); font-weight: 600; }
+
+  /* files bar */
+  .filesbar { display: flex; align-items: center; gap: 12px; padding: 16px 24px; }
+  .filesbar .muted { color: var(--muted); }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; font-size: 14px; font-weight: 500;
+    border: 1px solid var(--border); border-radius: 6px; background: var(--canvas-subtle); color: var(--fg); cursor: pointer;
+  }
+  .btn.green { background: var(--green); border-color: rgba(31,35,40,0.15); color: var(--green-fg); }
+  .spacer { flex: 1; }
+
+  /* diff */
+  .diffcard { margin: 0 24px 24px; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  .diffhead {
+    display: flex; align-items: center; gap: 8px; padding: 8px 12px; font-size: 12px;
+    background: var(--canvas-subtle); border-bottom: 1px solid var(--border);
+  }
+  .diffhead .adds { color: var(--open); font-weight: 600; }
+  .diffhead .dels { color: #cf222e; font-weight: 600; }
+  html[data-color-mode="dark"] .diffhead .dels { color: #f85149; }
+  table.diff { width: 100%; border-collapse: collapse; font-size: 12px; line-height: 20px; }
+  table.diff td { padding: 0 10px; white-space: pre; }
+  td.num { width: 1%; min-width: 44px; text-align: right; color: var(--muted); user-select: none; }
+  tr.add td.code { background: var(--add-bg); }
+  tr.add td.num { background: var(--add-num); }
+  tr.del td.code { background: var(--del-bg); }
+  tr.del td.num { background: var(--del-num); }
+  tr.hunk td { background: color-mix(in srgb, var(--accent) 8%, var(--canvas)); color: var(--muted); padding: 4px 10px; }
+
+  /* review dialog */
+  .overlay-anchor { position: relative; }
+  .review-dialog {
+    position: fixed; right: 24px; top: 108px; width: 640px; z-index: 99;
+    background: var(--canvas); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow);
+  }
+  .rd-head { display: flex; align-items: center; padding: 16px; border-bottom: 1px solid var(--border); }
+  .rd-head h2 { margin: 0; font-size: 14px; font-weight: 600; }
+  .rd-head .x { margin-left: auto; color: var(--muted); border: 0; background: none; font-size: 16px; cursor: pointer; }
+  .rd-body { padding: 16px; }
+  .editor { border: 1px solid var(--border); border-radius: 6px; background: var(--canvas); }
+  .editor-top { display: flex; align-items: center; padding: 8px 8px 0; }
+  .wp { display: flex; }
+  .wp button {
+    border: 0; background: none; color: var(--muted); font-size: 14px; padding: 6px 12px 10px; cursor: pointer;
+    border-bottom: 2px solid transparent;
+  }
+  .wp button[aria-selected="true"] { color: var(--fg); font-weight: 600; border-bottom-color: var(--tab-underline); }
+  .mdtools { margin-left: auto; display: flex; gap: 2px; color: var(--muted); }
+  .mdtools button { border: 0; background: none; color: var(--muted); width: 28px; height: 28px; border-radius: 6px; cursor: pointer; font-size: 13px; }
+  .mdtools button:hover { background: var(--canvas-subtle); }
+  .editor textarea {
+    display: block; width: 100%; min-height: 108px; padding: 8px; border: 0; resize: vertical;
+    background: transparent; color: var(--fg); font: 13px/1.4 ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    outline: none; white-space: pre; overflow-x: auto; border-top: 1px solid var(--border);
+  }
+  .attach { padding: 6px 8px; color: var(--muted); font-size: 12px; border-top: 1px dashed var(--border); }
+  .radios { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .radios label { display: flex; gap: 8px; align-items: flex-start; }
+  .radios .lbl { font-weight: 600; font-size: 14px; }
+  .radios .desc { color: var(--muted); font-size: 12px; }
+  .rd-foot { display: flex; justify-content: flex-end; gap: 8px; padding: 16px; border-top: 1px solid var(--border); }
+  .rd-foot kbd { font-size: 11px; opacity: .8; margin-left: 6px; }
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <div class="octo">🐙</div>
+  <div class="crumb"><span>acme /</span> turbo-encabulator</div>
+  <div class="searchpill"><span>Type <kbd class="slash">/</kbd> to search</span>🔍</div>
+</div>
+
+<div class="prhead">
+  <h1 class="prtitle">Add hyper-threaded marzlevanes to the turbo encabulator <span class="num">#42</span></h1>
+  <div><span class="state">⊙ Open</span>
+    <span class="prmeta"><b>coworker-bot</b> wants to merge 3 commits into <b>main</b> from <b>feat/marzlevanes</b></span>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab">💬 Conversation <span class="count">12</span></div>
+  <div class="tab">⊶ Commits <span class="count">3</span></div>
+  <div class="tab">✓ Checks <span class="count">7</span></div>
+  <div class="tab active">± Files changed <span class="count">4</span></div>
+</div>
+
+<div class="filesbar">
+  <span class="btn">Changes from all commits ▾</span>
+  <span class="muted">File filter ▾</span>
+  <span class="muted">Conversations ▾</span>
+  <span class="spacer"></span>
+  <span class="muted">+128 −17</span>
+  <button class="btn green" id="open-review">Submit review</button>
+</div>
+
+<div class="diffcard">
+  <div class="diffhead">
+    <span>▾</span>
+    <span class="mono">src/encabulator.js</span>
+    <span class="adds">+12</span><span class="dels">−3</span>
+  </div>
+  <table class="diff mono">
+    <tr class="hunk"><td class="num"></td><td class="num"></td><td class="code">@@ -18,9 +18,15 @@ export function initEncabulator(config) {</td></tr>
+    <tr><td class="num">18</td><td class="num">18</td><td class="code">  const base = prefabulate(config.amulite);</td></tr>
+    <tr class="del"><td class="num">19</td><td class="num"></td><td class="code">- const bearings = spuriousBearings(base).slice(0, 2);</td></tr>
+    <tr class="del"><td class="num">20</td><td class="num"></td><td class="code">- return new Encabulator(bearings);</td></tr>
+    <tr class="add"><td class="num"></td><td class="num">19</td><td class="code">+ const marzlevanes = hyperThreadedMarzlevanes(base, { count: 6 });</td></tr>
+    <tr class="add"><td class="num"></td><td class="num">20</td><td class="code">+ const bearings = spuriousBearings(base, { panametric: true });</td></tr>
+    <tr class="add"><td class="num"></td><td class="num">21</td><td class="code">+ return new Encabulator(bearings, marzlevanes, {</td></tr>
+    <tr class="add"><td class="num"></td><td class="num">22</td><td class="code">+   preventSideFumbling: true,</td></tr>
+    <tr class="add"><td class="num"></td><td class="num">23</td><td class="code">+ });</td></tr>
+    <tr><td class="num">21</td><td class="num">24</td><td class="code">}</td></tr>
+    <tr><td class="num">22</td><td class="num">25</td><td class="code"></td></tr>
+    <tr><td class="num">23</td><td class="num">26</td><td class="code">export function ambifacientLunarWaneshaft() {</td></tr>
+  </table>
+</div>
+
+<div id="mount" class="overlay-anchor"></div>
+
+<script>
+  // Dialog is mounted on click, the way GitHub's React UI does it.
+  document.getElementById("open-review").addEventListener("click", () => {
+    document.getElementById("mount").innerHTML = `
+      <div role="dialog" aria-labelledby="rd-title" class="review-dialog">
+        <div class="rd-head"><h2 id="rd-title">Finish your review</h2><button class="x">✕</button></div>
+        <div class="rd-body">
+          <div class="editor">
+            <div class="editor-top">
+              <div class="wp" role="tablist">
+                <button role="tab" aria-selected="true">Write</button>
+                <button role="tab">Preview</button>
+              </div>
+              <div class="mdtools" role="toolbar">
+                <button>H</button><button><b>B</b></button><button><i>I</i></button>
+                <button>&lt;&gt;</button><button>🔗</button><button>☰</button><button>@</button>
+              </div>
+            </div>
+            <textarea placeholder="Leave a comment" aria-label="Leave a comment"></textarea>
+            <div class="attach">📎 Paste, drop, or click to add files</div>
+          </div>
+          <div class="radios">
+            <label><input type="radio" name="event" value="COMMENT">
+              <span><span class="lbl">Comment</span><br><span class="desc">Submit general feedback without explicit approval.</span></span></label>
+            <label><input type="radio" name="event" value="APPROVE" checked>
+              <span><span class="lbl">Approve</span><br><span class="desc">Submit feedback and approve merging these changes.</span></span></label>
+            <label><input type="radio" name="event" value="REQUEST_CHANGES">
+              <span><span class="lbl">Request changes</span><br><span class="desc">Submit feedback that must be addressed before merging.</span></span></label>
+          </div>
+        </div>
+        <div class="rd-foot">
+          <button class="btn">Cancel</button>
+          <button class="btn green">Submit review<kbd>⌘⏎</kbd></button>
+        </div>
+      </div>`;
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ASCII Approve — Arts</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <header>
+      <h1>ASCII Approve</h1>
+      <p class="sub">Arts show up in the picker above GitHub's <em>Review changes</em> comment box. Custom arts are listed first.</p>
+    </header>
+
+    <section>
+      <div class="section-head">
+        <h2>Your arts</h2>
+        <div class="actions">
+          <button id="add" class="btn primary">+ New art</button>
+          <button id="export" class="btn">Export JSON</button>
+          <button id="import" class="btn">Import JSON</button>
+          <input id="import-file" type="file" accept="application/json,.json" hidden />
+        </div>
+      </div>
+      <p id="empty" class="muted" hidden>No custom arts yet. Paste something glorious.</p>
+      <div id="custom" class="cards"></div>
+      <p id="status" class="status" aria-live="polite"></p>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>Bundled arts</h2>
+        <p class="muted">Ship with the extension. Want to add one for everyone? Open a PR.</p>
+      </div>
+      <div id="bundled" class="cards readonly"></div>
+    </section>
+
+    <template id="card-tpl">
+      <article class="card">
+        <div class="card-head">
+          <input class="name" type="text" placeholder="Name (e.g. Ship it)" />
+          <input class="tags" type="text" placeholder="tags, comma separated (optional)" />
+          <button class="btn danger delete" title="Delete">Delete</button>
+        </div>
+        <textarea class="art" spellcheck="false" placeholder="Paste ASCII art here…"></textarea>
+      </article>
+    </template>
+
+    <script src="arts.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>

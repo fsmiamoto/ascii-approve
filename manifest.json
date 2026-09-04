@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "ASCII Approve",
+  "version": "0.2.0",
+  "description": "Approve GitHub pull requests with style: pick an ASCII art (Ship it, Sanic, F1…) and drop it into your review comment.",
+  "permissions": ["storage"],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "ASCII Approve — manage arts"
+  },
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "options_ui": {
+    "page": "src/options.html",
+    "open_in_tab": true
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://github.com/*"],
+      "js": ["src/arts.js", "src/content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

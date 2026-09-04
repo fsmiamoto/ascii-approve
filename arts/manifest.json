@@ -1,0 +1,136 @@
+[
+  {
+    "id": "sanic",
+    "name": "Sanic approves",
+    "tags": [
+      "gotta go fast",
+      "sonic",
+      "lgtm"
+    ],
+    "credit": "Flavio Miamoto"
+  },
+  {
+    "id": "shipit",
+    "name": "Ship it",
+    "tags": [
+      "ship",
+      "merge",
+      "boat"
+    ],
+    "credit": "Ship: unknown artist (asciiart.eu); text: figlet ansi_shadow"
+  },
+  {
+    "id": "lgtm",
+    "name": "LGTM",
+    "tags": [
+      "looks good to me",
+      "thumbs up",
+      "approve"
+    ],
+    "credit": "Thumbs up: Donovan Baker (dwb); text: figlet ansi_shadow"
+  },
+  {
+    "id": "f1-lights-out",
+    "name": "F1 — Lights out",
+    "tags": [
+      "formula 1",
+      "race",
+      "fast",
+      "lights out and away we go"
+    ],
+    "credit": "Car: jrei (ascii.co.uk); text: figlet slant"
+  },
+  {
+    "id": "f1-front-row",
+    "name": "F1 — Front row",
+    "tags": [
+      "formula 1",
+      "race",
+      "box box"
+    ],
+    "credit": "Seal do Mar (rec.arts.ascii, 1996)"
+  },
+  {
+    "id": "f1-ship-it-wing",
+    "name": "F1 — Ship-it wing",
+    "tags": [
+      "formula 1",
+      "race",
+      "ship it",
+      "mclaren"
+    ],
+    "credit": "Adapted from jrei (ascii.co.uk) — rear-wing text changed"
+  },
+  {
+    "id": "gotta-go-fast",
+    "name": "Gotta go fast",
+    "tags": [
+      "speed",
+      "fast",
+      "sonic"
+    ],
+    "credit": "Sonic: Han J. Lee; text: figlet slant"
+  },
+  {
+    "id": "speedrun",
+    "name": "Speedrun",
+    "tags": [
+      "fast",
+      "running",
+      "quick"
+    ],
+    "credit": "Runner: Joan G. Stark (jgs)"
+  },
+  {
+    "id": "merge-award",
+    "name": "Merge award",
+    "tags": [
+      "trophy",
+      "award",
+      "winner"
+    ],
+    "credit": "Adapted from Joan G. Stark (jgs) — \"ASCII AWARD\" → \"MERGE AWARD\""
+  },
+  {
+    "id": "fireworks",
+    "name": "Fireworks",
+    "tags": [
+      "party",
+      "celebrate",
+      "shipped"
+    ],
+    "credit": "Joan G. Stark (jgs)"
+  },
+  {
+    "id": "rawr",
+    "name": "Rawr",
+    "tags": [
+      "dinosaur",
+      "dino",
+      "approved"
+    ],
+    "credit": "Happy Dinosaur: unknown artist (asciiart.eu)"
+  },
+  {
+    "id": "beep-boop",
+    "name": "Beep boop",
+    "tags": [
+      "robot",
+      "ai",
+      "automated"
+    ],
+    "credit": "Robot: Michael J. Penick (MJP)"
+  },
+  {
+    "id": "espadon",
+    "name": "Espadon approves",
+    "tags": [
+      "espadon",
+      "swordfish",
+      "fish",
+      "fast",
+      "approves"
+    ],
+    "credit": "unknown"
+  }
+]
